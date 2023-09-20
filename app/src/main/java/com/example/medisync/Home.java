@@ -52,7 +52,7 @@ public class Home extends AppCompatActivity {
 
 // Get the BottomSheetBehavior from the FrameLayout
         BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        int peakHeightPixels = screenHeight - firstFrameHeight; // Replace with your desired value
+        int peakHeightPixels = (int) (screenHeight * 0.29); // Replace with your desired value
         bottomSheetBehavior.setPeekHeight(peakHeightPixels);
 
         // Set the initial state of the BottomSheet to collapsed

@@ -16,15 +16,16 @@
     <FrameLayout
         android:id="@+id/sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="710dp"
+        android:background="@drawable/drawable_bg"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-
         <include
+
             layout="@layout/bottomlist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="32dp" />
+            android:layout_width="384dp"
+            android:layout_height="650dp"
+            />
 
     </FrameLayout>
 
