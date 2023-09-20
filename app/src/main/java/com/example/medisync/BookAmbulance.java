@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-public class Home extends AppCompatActivity {
+public class BookAmbulance extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_bookambulance);
         final View mapFrame = findViewById(R.id.mapframe);
         final View bottomSheet = findViewById(R.id.sheet);
 
