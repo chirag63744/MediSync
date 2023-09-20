@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_white"
+
     tools:context=".Home">
 
-    <FrameLayout
-        android:id="@+id/mapframe"
-        android:layout_width="match_parent"
-        android:layout_height="596dp">
-
-    </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/sheet"
-        android:layout_width="match_parent"
-        android:layout_height="710dp"
-        android:background="@drawable/drawable_bg"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        <include
-
-            layout="@layout/bottomlist"
-            android:layout_width="384dp"
-            android:layout_height="650dp"
-            />
-
+        android:id="@+id/homeFrame"
+        android:layout_width="395dp"
+        android:layout_height="594dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     </FrameLayout>
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="321dp"
+        android:layout_height="65dp"
+        android:layout_margin="30dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bottomnavi"
+        android:elevation="2dp"
+        app:itemIconTint="@drawable/itemselector"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
