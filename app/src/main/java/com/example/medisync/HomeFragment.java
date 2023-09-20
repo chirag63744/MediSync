@@ -1,5 +1,7 @@
 package com.example.medisync;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -8,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +19,8 @@ import android.view.ViewGroup;
  *
  */
 public class HomeFragment extends Fragment {
+    Button showAmbulance;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,9 +62,22 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View root =  inflater.inflate(R.layout.fragment_home, container, false);
+        showAmbulance=root.findViewById(R.id.bookAmbulance);
+        showAmbulance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),BookAmbulance.class);
+                startActivity(i);
+            }
+        });
+
+
         FragmentManager fragmentManager = getChildFragmentManager();
 
         // Create a FragmentTransaction
@@ -72,12 +90,7 @@ public class HomeFragment extends Fragment {
         // Commit the transaction
         transaction.commit();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return root;
     }
-    private void replaceFragment3(Fragment fragment) {
-        FragmentManager fragmentManager = getChildFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment2, fragment);
-        fragmentTransaction.commit();
-    }
+
 }

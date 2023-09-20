@@ -15,7 +15,6 @@
             android:id="@+id/cardView"
             android:layout_width="409dp"
             android:layout_height="288dp"
-            android:layout_marginTop="4dp"
             android:layout_marginBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -32,10 +31,10 @@
 
                 <TextView
                     android:id="@+id/textView4"
-                    android:layout_width="328dp"
-                    android:layout_height="46dp"
+                    android:layout_width="323dp"
+                    android:layout_height="59dp"
                     android:layout_marginTop="16dp"
-                    android:text="Kuch Likhn H"
+                    android:text="Book Ambulance Services with Best Facilty"
                     android:textSize="24dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -46,13 +45,14 @@
                 </TextView>
 
                 <TextView
-                    android:layout_width="316dp"
-                    android:layout_height="104dp"
-                    android:layout_marginBottom="92dp"
-                    android:text="Kuch Likhna h badaiya"
+                    android:layout_width="289dp"
+                    android:layout_height="92dp"
+                    android:layout_marginBottom="76dp"
+                    android:text="@string/integerated_ambulance_services_to_save_human_lives_by_providing_an_network_of_equipped_ambulances"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.162"
+                    app:layout_constraintHorizontal_bias="0.242"
                     app:layout_constraintStart_toStartOf="parent">
 
                 </TextView>
@@ -60,7 +60,8 @@
                 <Button
                     android:layout_width="287dp"
                     android:layout_height="42dp"
-                    android:layout_marginBottom="28dp"
+                    android:id="@+id/bookAmbulance"
+                    android:layout_marginBottom="16dp"
                     android:backgroundTint="#ED4968"
                     android:text="Book Ambulance"
                     app:layout_constraintBottom_toBottomOf="parent"
