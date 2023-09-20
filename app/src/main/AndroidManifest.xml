@@ -26,12 +26,17 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAzqvfnkTxixF4PtUR4Kxo-a2SBjfCjUkc" />
+            android:value="AIzaSyBX3SlmgUHOgvNqMxiEe8uK5fMI4Tsh9wk" />
 
         <activity
-            android:name=".BookAmbulance"
-            android:exported="false" />
+            android:name=".Home"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Register"
             android:exported="false" />
@@ -41,15 +46,6 @@
         <activity
             android:name=".Splash"
             android:exported="false" />
-        <activity android:name=".Home"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
