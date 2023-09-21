@@ -249,6 +249,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:fontFamily="@font/dmbold"
+        android:id="@+id/loginn"
         android:text="Already an User? Login"
         android:textColor="@color/black"
         android:textSize="15dp"

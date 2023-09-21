@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="#FFEEF2"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="150dp"
+    app:behavior_peekHeight="280dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
