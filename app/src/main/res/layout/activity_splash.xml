@@ -87,7 +87,7 @@
         android:layout_width="290dp"
         android:layout_height="56dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/white"
+        android:background="@drawable/buttonwhite"
         android:fontFamily="@font/dmbold"
         android:text="Login"
         android:textColor="#ED4968"
