@@ -17,6 +17,7 @@
         android:layout_height="match_parent">
 
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -33,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
                 android:gravity="center_horizontal"
-                android:text="Nearest Ambulance"
+                android:text="Driver Details"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -42,14 +43,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:id="@+id/card1"
                 app:cardCornerRadius="8dp">
+
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="86dp"
+                            android:layout_height="86dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/baseline_person_24"
+                            android:id="@+id/personImageView"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:fontFamily="serif"
+                            android:text="Lauryn Arora"
+
+                            android:textColor="@color/black"
+                            android:textSize="20dp">
+
+                        </TextView>
+                    </LinearLayout>
 
                     <!-- First LinearLayout -->
                     <LinearLayout
@@ -110,141 +137,37 @@
                         android:paddingTop="16dp">
 
                         <TextView
-                            android:layout_width="148dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="serif"
-                            android:text="Distance from current location"
+                            android:text="Mobile number: "
                             android:textColor="@color/black"
-                            android:textSize="18dp" />
+                            android:textSize="20dp" />
 
                         <TextView
                             android:layout_width="188dp"
                             android:layout_height="30dp"
                             android:layout_weight="1"
                             android:fontFamily="serif"
-                            android:text="5km"
+                            android:text="7806374433"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
                     </LinearLayout>
-                    <CheckBox
-                        android:id="@+id/myCheckBox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="false"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="230dp"
-                         />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:id="@+id/card2"
-                app:cardCornerRadius="8dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <!-- First LinearLayout -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:fontFamily="serif"
-                            android:text="Ambulance No:"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/black"
-                            android:fontFamily="serif"
-                            android:text="TN58AK1400"
-                            android:textSize="20dp" />
-                    </LinearLayout>
-
-                    <!-- Second LinearLayout -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="16dp">
-
-                        <TextView
-                            android:layout_width="132dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="serif"
-                            android:text="Hospital Name"
-                            android:textColor="@color/black"
-                            android:textSize="20dp" />
-
-                        <TextView
-                            android:layout_width="226dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:fontFamily="serif"
-                            android:text="Manipal Hospitals"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-
-                    <!-- Third LinearLayout -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="16dp">
-
-                        <TextView
-                            android:layout_width="148dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="serif"
-                            android:text="Distance from current location"
-                            android:textColor="@color/black"
-                            android:textSize="18dp" />
-
-                        <TextView
-                            android:layout_width="188dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:fontFamily="serif"
-                            android:text="5km"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-                    <CheckBox
-                        android:id="@+id/myCheckBox1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="false"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="230dp"
-                        />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/bookAmb"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="50dp"
                 android:fontFamily="@font/dmbold"
-                android:text="Book Ambulance"
+                android:text="Call Driver"
                 android:textColor="#ED4968"
                 android:backgroundTint="@color/white"
                 android:textSize="18sp" />

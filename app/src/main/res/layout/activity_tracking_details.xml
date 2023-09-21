@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookAmbulance">
+    tools:context=".Tracking_Details">
 
     <FrameLayout
         android:id="@+id/mapframe"
@@ -22,9 +22,9 @@
 
         <include
 
-            layout="@layout/bottomlist"
+            layout="@layout/bottomlist_show_booking"
             android:layout_width="384dp"
-            android:layout_height="750dp"
+            android:layout_height="650dp"
             />
 
     </FrameLayout>
