@@ -91,7 +91,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     Double latitude = dc.getDouble("latitude");
                     Double longitude = dc.getDouble("longitude");
                     String busName = dc.getString("text");
-                    Toast.makeText(getActivity(), busName, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getActivity(), busName, Toast.LENGTH_SHORT).show();
                     LatLng location = new LatLng(latitude, longitude);
                     Bus bus = new Bus(busName, location);
                     allBuses.add(bus);

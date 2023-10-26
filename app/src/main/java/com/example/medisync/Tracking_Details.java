@@ -4,13 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class Tracking_Details extends AppCompatActivity {
+    Button b1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +22,14 @@ public class Tracking_Details extends AppCompatActivity {
         final View mapFrame = findViewById(R.id.mapframe);
         final View bottomSheet = findViewById(R.id.sheet);
 
+        b1=findViewById(R.id.bookAmb);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(Tracking_Details.this,azure2.class);
+                startActivity(i);
+            }
+        });
         // Get the BottomSheetBehavior from the FrameLayout
         //final BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
