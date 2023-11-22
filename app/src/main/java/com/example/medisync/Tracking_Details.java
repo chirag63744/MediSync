@@ -1,19 +1,45 @@
 package com.example.medisync;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Tracking_Details extends AppCompatActivity {
     Button b1;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +48,38 @@ public class Tracking_Details extends AppCompatActivity {
         final View mapFrame = findViewById(R.id.mapframe);
         final View bottomSheet = findViewById(R.id.sheet);
 
-        b1=findViewById(R.id.bookAmb);
+        b1 = findViewById(R.id.bookAmb);
+        firestore = FirebaseFirestore.getInstance();
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(Tracking_Details.this,azure2.class);
-                startActivity(i);
+                String collectionName = "AmbulanceTrust";
+                String csvFilePath = "Ambulance_trustworthiness.csv";
+
+                uploadCsvToFirestore(collectionName, csvFilePath);
+            }
+        });
+        DocumentReference docRef = firestore.collection("DriverTrust").document("101");
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Retrieve the fields from the document
+                        String field1 = document.getString("DriverID");
+                        String field2 = document.getString("TrustworthinessScore");
+                        Toast.makeText(Tracking_Details.this, field2, Toast.LENGTH_SHORT).show();
+
+                        Log.d(TAG, "Field 1: " + field1);
+                        Log.d(TAG, "Field 2: " + field2);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
             }
         });
         // Get the BottomSheetBehavior from the FrameLayout
@@ -68,5 +120,53 @@ public class Tracking_Details extends AppCompatActivity {
 
         // Set the initial state of the BottomSheet to collapsed
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    private void uploadCsvToFirestore(String collectionName, String csvFileName) {
+        try {
+            // Read CSV file from assets
+            InputStream inputStream = getResources().getAssets().open(csvFileName);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            // Assuming the first row contains headers
+            String[] headers = reader.readLine().split(",");
+
+            // Process each row and add to Firestore
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] values = line.split(",");
+
+                // Use the first column (DriverID) as the document ID
+                String documentId = values[0];
+
+                // Create a Map with headers as keys and values as data
+                Map<String, Object> data = new HashMap<>();
+                for (int i = 0; i < headers.length; i++) {
+                    data.put(headers[i], values[i]);
+                }
+
+                // Add the data to Firestore with the specified document ID
+                firestore.collection(collectionName)
+                        .document(documentId)
+                        .set(data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // Data added successfully
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Handle failure
+                            }
+                        });
+
+            // Close the BufferedReader
+        }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
