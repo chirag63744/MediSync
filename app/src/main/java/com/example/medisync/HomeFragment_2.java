@@ -28,7 +28,8 @@ public class HomeFragment_2 extends Fragment {
 
     private static final int PICK_PDF_REQUEST = 1;
     private Uri pdfUri;
-    ImageView upload;
+    ImageView upload,profile;
+    CardView profileCard;
     private loading loadingDialog;
 
     @SuppressLint("MissingInflatedId")
@@ -47,6 +48,14 @@ public class HomeFragment_2 extends Fragment {
         // Get references to UI elements
         CardView uploadReportsCardView = view.findViewById(R.id.cardView2);
         upload = view.findViewById(R.id.Upload_Image);
+        profile=view.findViewById(R.id.profile);
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), Profile.class);
+                startActivity(i);
+            }
+        });
         loadingDialog = new loading(getContext());
 
         upload.setOnClickListener(new View.OnClickListener() {
