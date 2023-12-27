@@ -15,8 +15,8 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-       @SuppressLint({"MissingInflatedId", "LocalSuppress"}) final View Frame1 = findViewById(R.id.FrameScroll);
-       final View NavigationBar=findViewById(R.id.bottomNavigationView);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) final View Frame1 = findViewById(R.id.FrameScroll);
+        final View NavigationBar=findViewById(R.id.bottomNavigationView);
 
 
 
@@ -32,16 +32,16 @@ public class Home extends AppCompatActivity {
 
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        String email = getIntent().getStringExtra("EMAIL");
 
-        // Create a FragmentTransaction
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        // Create or replace HomeFragment and set email as an argument
+        NameDisplay nameDisplay = new NameDisplay();
+        Bundle bundle = new Bundle();
+        bundle.putString("EMAIL", email);
+        nameDisplay.setArguments(bundle);
 
-        // Add a fragment to the container (R.id.fragment_container) in your layout
-        HomeFragment firstFragment = new HomeFragment();
-        transaction.add(R.id.homeFrame, firstFragment);
-
-        // Commit the transaction
-        transaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.homeFrame, nameDisplay)
+                .commit();
     }
 }

@@ -1,75 +1,147 @@
 package com.example.medisync;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment_2#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment_2 extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final int PICK_PDF_REQUEST = 1;
+    private Uri pdfUri;
+    ImageView upload;
+    private loading loadingDialog;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HomeFragment_2() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment_2.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment_2 newInstance(String param1, String param2) {
-        HomeFragment_2 fragment = new HomeFragment_2();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home_2, container, false);
+
+        // Your existing code for fragment transaction
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        // Add a fragment to the container (R.id.fragment_container) in your layout
         HomeFragment3 firstFragment = new HomeFragment3();
         transaction.add(R.id.fragment2, firstFragment);
-
-        // Commit the transaction
         transaction.commit();
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_2, container, false);
+
+        // Get references to UI elements
+        CardView uploadReportsCardView = view.findViewById(R.id.cardView2);
+        upload = view.findViewById(R.id.Upload_Image);
+        loadingDialog = new loading(getContext());
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPDF();
+            }
+        });
+
+        // Set OnClickListener for the uploadReportsCardView
+        uploadReportsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call a method to handle file upload
+                // selectPDF();
+            }
+        });
+
+        return view;
+    }
+
+    // Method to handle file selection
+    private void selectPDF() {
+        Intent intent = new Intent();
+        intent.setType("application/pdf");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_PDF_REQUEST);
+    }
+
+    // Handle the result of file selection
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_PDF_REQUEST && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
+            pdfUri = data.getData();
+            // File is selected, now you can proceed with the file upload
+            uploadReports();
+        }
+    }
+
+    // Method to handle file upload
+    private void uploadReports() {
+        if (pdfUri != null) {
+            loadingDialog.show();
+            String email = getArguments().getString("EMAIL");
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageReference = storage.getReference().child("pdfs/" + System.currentTimeMillis() + ".pdf");
+
+            storageReference.putFile(pdfUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // File upload success
+                        Toast.makeText(requireContext(), "File Upload Successful", Toast.LENGTH_SHORT).show();
+
+                        // Get the download URL of the uploaded file
+                        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                            // Save the PDF link to the Realtime Database
+                            savePdfLinkToDatabase(email, uri.toString());
+
+                            // Dismiss the loading dialog
+                            loadingDialog.dismiss();
+                        }).addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            Toast.makeText(requireContext(), "Failed to retrieve PDF link", Toast.LENGTH_SHORT).show();
+                        });
+
+                    })
+                    .addOnFailureListener(e -> {
+                        loadingDialog.dismiss();
+                        // File upload failure
+                        Toast.makeText(requireContext(), "File Upload Failed", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(requireContext(), "Select a PDF file first", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Method to save the PDF link to the Realtime Database
+    private void savePdfLinkToDatabase(String email, String pdfLink) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+            // Create a reference to the users node in the database
+            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+
+            // Update the PDF link in the database where email matches
+            usersRef.child(userId).child("pdfLink").setValue(pdfLink)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(requireContext(), "PDF Link saved to Database", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(requireContext(), "Failed to save PDF Link to Database", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 }

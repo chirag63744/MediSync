@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -38,8 +39,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Tracking_Details extends AppCompatActivity {
-    Button b1;
+    Button b1,b2;
+    String trustworthinessScore;
     private FirebaseFirestore firestore;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +52,26 @@ public class Tracking_Details extends AppCompatActivity {
         final View bottomSheet = findViewById(R.id.sheet);
 
         b1 = findViewById(R.id.bookAmb);
+        textView=findViewById(R.id.reviewtxt);
+        b2=findViewById(R.id.review);
+
         firestore = FirebaseFirestore.getInstance();
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String collectionName = "AmbulanceTrust";
-                String csvFilePath = "Ambulance_trustworthiness.csv";
+//                String collectionName = "AmbulanceTrust";
+//                String csvFilePath = "Ambulance_trustworthiness.csv";
+//
+//                uploadCsvToFirestore(collectionName, csvFilePath);
+//
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Tracking_Details.this, Review.class);
+               startActivity(i);
 
-                uploadCsvToFirestore(collectionName, csvFilePath);
             }
         });
         DocumentReference docRef = firestore.collection("DriverTrust").document("101");
@@ -78,10 +93,12 @@ public class Tracking_Details extends AppCompatActivity {
                         Log.d(TAG, "No such document");
                     }
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    Log.d(TAG, "get failed w ith ", task.getException());
                 }
             }
         });
+        fetchDataFromFirestore("101");
+        textView.setText(trustworthinessScore);
         // Get the BottomSheetBehavior from the FrameLayout
         //final BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
@@ -120,6 +137,39 @@ public class Tracking_Details extends AppCompatActivity {
 
         // Set the initial state of the BottomSheet to collapsed
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    private void fetchDataFromFirestore(String documentId) {
+        firestore.collection("DriverTrust") // Replace with your actual collection name
+                .document(documentId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // DocumentSnapshot contains the data from the document
+                                String driverID = document.getString("DriverID");
+                                trustworthinessScore = document.getString("TrustworthinessScore");
+                                textView.setText(trustworthinessScore);
+
+                                // Now you can use driverID and trustworthinessScore as needed
+                                // For example, you can display them in TextViews or log them
+                                // Log.d("FirestoreData", "DriverID: " + driverID + ", TrustworthinessScore: " + trustworthinessScore);
+                            } else {
+                                Toast.makeText(Tracking_Details.this, "bhiiii", Toast.LENGTH_SHORT).show();
+                                // Document doesn't exist
+                                // Handle accordingly
+                            }
+                        } else {
+                            // Task failed with an exception
+                            Exception exception = task.getException();
+                            // Handle accordingly
+                        }
+                    }
+                });
+        //Toast.makeText(this, trustworthinessScore, Toast.LENGTH_SHORT).show();
     }
 
     private void uploadCsvToFirestore(String collectionName, String csvFileName) {
