@@ -31,6 +31,7 @@ public class HomeFragment_2 extends Fragment {
     ImageView upload,profile;
     CardView profileCard;
     private loading loadingDialog;
+    String email;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,7 +44,9 @@ public class HomeFragment_2 extends Fragment {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         HomeFragment3 firstFragment = new HomeFragment3();
         transaction.add(R.id.fragment2, firstFragment);
+        email = getArguments().getString("EMAIL");
         transaction.commit();
+
 
         // Get references to UI elements
         CardView uploadReportsCardView = view.findViewById(R.id.cardView2);
@@ -53,9 +56,11 @@ public class HomeFragment_2 extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), Profile.class);
+                i.putExtra("EMAIL", email);  // Pass the email to the Profile activity
                 startActivity(i);
             }
         });
+
         loadingDialog = new loading(getContext());
 
         upload.setOnClickListener(new View.OnClickListener() {
@@ -98,41 +103,64 @@ public class HomeFragment_2 extends Fragment {
     }
 
     // Method to handle file upload
+    // Method to handle file upload
     private void uploadReports() {
         if (pdfUri != null) {
             loadingDialog.show();
-            String email = getArguments().getString("EMAIL");
 
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageReference = storage.getReference().child("pdfs/" + System.currentTimeMillis() + ".pdf");
+            // Check if the user is authenticated
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser != null) {
+                String email = getArguments().getString("EMAIL");
 
-            storageReference.putFile(pdfUri)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        // File upload success
-                        Toast.makeText(requireContext(), "File Upload Successful", Toast.LENGTH_SHORT).show();
+                // Reference to the Firebase Storage
+                FirebaseUser currentUser1 = FirebaseAuth.getInstance().getCurrentUser();
+                if (currentUser1 != null) {
+                    // Use the email variable instead of getting it again
+                    // String email = getArguments().getString("EMAIL");
 
-                        // Get the download URL of the uploaded file
-                        storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                            // Save the PDF link to the Realtime Database
-                            savePdfLinkToDatabase(email, uri.toString());
+                    // Reference to the Firebase Storage
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
 
-                            // Dismiss the loading dialog
-                            loadingDialog.dismiss();
-                        }).addOnFailureListener(e -> {
-                            loadingDialog.dismiss();
-                            Toast.makeText(requireContext(), "Failed to retrieve PDF link", Toast.LENGTH_SHORT).show();
-                        });
+                    // Create a folder in Firebase Storage with the user's email
+                    String userFolder = "users/" + email;
+                    StorageReference userStorageReference = storage.getReference().child(userFolder);
 
-                    })
-                    .addOnFailureListener(e -> {
-                        loadingDialog.dismiss();
-                        // File upload failure
-                        Toast.makeText(requireContext(), "File Upload Failed", Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            Toast.makeText(requireContext(), "Select a PDF file first", Toast.LENGTH_SHORT).show();
-        }
-    }
+                    // Upload the PDF file to the user's folder
+                    StorageReference pdfReference = userStorageReference.child(System.currentTimeMillis() + ".pdf");
+                    pdfReference.putFile(pdfUri)
+                            .addOnSuccessListener(taskSnapshot -> {
+                                // File upload success
+                                Toast.makeText(requireContext(), "File Upload Successful", Toast.LENGTH_SHORT).show();
+
+                                // Get the download URL of the uploaded file
+                                pdfReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                                    // Save the PDF link to the Realtime Database
+                                    savePdfLinkToDatabase(email, uri.toString());
+
+                                    // Dismiss the loading dialog
+                                    loadingDialog.dismiss();
+                                }).addOnFailureListener(e -> {
+                                    loadingDialog.dismiss();
+                                    Toast.makeText(requireContext(), "Failed to retrieve PDF link", Toast.LENGTH_SHORT).show();
+                                });
+
+                            })
+                            .addOnFailureListener(e -> {
+                                loadingDialog.dismiss();
+                                // File upload failure
+                                Toast.makeText(requireContext(), "File Upload Failed", Toast.LENGTH_SHORT).show();
+                            });
+                } else {
+                    // User is not authenticated, prompt them to log in
+                    Toast.makeText(requireContext(), "Please log in to upload PDF files", Toast.LENGTH_SHORT).show();
+                    loadingDialog.dismiss();
+                }
+            } else {
+                Toast.makeText(requireContext(), "Select a PDF file first", Toast.LENGTH_SHORT).show();
+            }
+        }}
+
 
     // Method to save the PDF link to the Realtime Database
     private void savePdfLinkToDatabase(String email, String pdfLink) {

@@ -91,55 +91,61 @@
 
             </TextView>
 
-            <TextView
-                android:layout_width="129dp"
-                android:layout_height="39dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="80dp"
+            <EditText
+                android:id="@+id/nameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
                 android:fontFamily="@font/dmbold"
                 android:text="Chirag Garg"
                 android:textColor="@color/black"
                 android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.053"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </TextView>
+            </EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="132dp"
+                android:layout_marginTop="136dp"
                 android:fontFamily="@font/dmbold"
                 android:text="Phone Number"
                 android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.056"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
             </TextView>
 
-            <TextView
+            <EditText
+                android:id="@+id/phoneTextView"
                 android:layout_width="129dp"
-                android:layout_height="39dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="184dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="188dp"
                 android:fontFamily="@font/dmbold"
                 android:text="6374486837"
                 android:textColor="@color/black"
-                android:textSize="18dp"
+                android:cursorVisible="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.06"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </TextView>
+            </EditText>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="248dp"
+                android:layout_marginTop="244dp"
                 android:fontFamily="@font/dmbold"
                 android:text="Email"
                 android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.046"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -147,6 +153,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
+                android:id="@+id/emailTextView"
                 android:layout_height="39dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="292dp"
@@ -160,13 +167,28 @@
             </TextView>
 
             <Button
-                android:id="@+id/bookAmb"
+                android:id="@+id/Edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="148dp"
                 android:background="@drawable/buttonred"
                 android:fontFamily="@font/dmbold"
                 android:text="Edit"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.396"
+                app:layout_constraintStart_toStartOf="parent" />
+            <Button
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="148dp"
+                android:background="@drawable/buttonred"
+                android:fontFamily="@font/dmbold"
+                android:text="Save"
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
