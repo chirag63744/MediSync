@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C3BEBE"
+    android:background="#F4F0F0"
     tools:context=".Home">
 
     <ScrollView
@@ -21,6 +21,7 @@
             android:id="@+id/homeFrame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:layout_marginTop="4dp">
 
             <!-- Content of the FrameLayout goes here -->
@@ -32,6 +33,7 @@
         android:id="@+id/btm"
         android:layout_width="321dp"
         android:layout_height="65dp"
+
         android:layout_margin="30dp"
         app:itemTextColor="@color/black"
         android:layout_marginBottom="16dp"

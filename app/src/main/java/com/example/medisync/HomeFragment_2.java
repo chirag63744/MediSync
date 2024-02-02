@@ -28,7 +28,7 @@ public class HomeFragment_2 extends Fragment {
 
     private static final int PICK_PDF_REQUEST = 1;
     private Uri pdfUri;
-    ImageView upload,profile;
+    ImageView upload,profile,contact;
     CardView profileCard;
     private loading loadingDialog;
     String email;
@@ -52,6 +52,14 @@ public class HomeFragment_2 extends Fragment {
         CardView uploadReportsCardView = view.findViewById(R.id.cardView2);
         upload = view.findViewById(R.id.Upload_Image);
         profile=view.findViewById(R.id.profile);
+        contact=view.findViewById(R.id.contactus);
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(),Medical_data.class);
+                startActivity(i);
+            }
+        });
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

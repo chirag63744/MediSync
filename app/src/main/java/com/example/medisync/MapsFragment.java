@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -48,7 +49,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
+
+
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
+
+    public interface MarkerClickListener {
+        void onMarkerClick();
+    }
+
+    private MarkerClickListener markerClickListener;
+
 
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
@@ -77,6 +89,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         CollectionReference busesRef = db.collection("Ambulance");
 
         // Listen for changes to the documents in Firebase
+        // Listen for changes to the documents in Firebase
+        GlobalLists globalLists = GlobalLists.getInstance();
+
+        // Clear existing data in the global lists
+
         busesRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
@@ -90,11 +107,21 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 for (DocumentSnapshot dc : snapshots) {
                     Double latitude = dc.getDouble("latitude");
                     Double longitude = dc.getDouble("longitude");
-                    String busName = dc.getString("text");
-                   // Toast.makeText(getActivity(), busName, Toast.LENGTH_SHORT).show();
-                    LatLng location = new LatLng(latitude, longitude);
-                    Bus bus = new Bus(busName, location);
-                    allBuses.add(bus);
+                    String Ambno=dc.getString("No");
+
+                    // Check if latitude and longitude are not null before using them
+                    if (latitude != null && longitude != null) {
+                        globalLists.getLatitudeList().add(latitude);
+                        globalLists.getLongitudeList().add(longitude);
+                        globalLists.getAmbNoList().add(Ambno);
+                        String busName = dc.getString("text");
+                        LatLng location = new LatLng(latitude, longitude);
+                        Bus bus = new Bus(busName, location);
+                        allBuses.add(bus);
+
+                    } else {
+                        Log.w(TAG, "Latitude or Longitude is null for a bus");
+                    }
                 }
 
                 // Now that we have fetched the data, update the map with markers
@@ -102,7 +129,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+
+
+
         return view;
+    }
+    public void setMarkerClickListener(MarkerClickListener listener) {
+        this.markerClickListener = listener;
     }
 
     private void updateMapWithMarkers() {
@@ -126,6 +159,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
             // Check if the bus is within the radius
             if (distanceToBus <= RADIUS_IN_METERS) {
+                GlobalLists globalLists = GlobalLists.getInstance();
+                globalLists.getLatitudeList().add(bus.getLocation().latitude);
+                System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"+globalLists.getLatitudeList().get(0));
+
                 // Check if the marker for this bus already exists
                 Marker busMarker = busMarkers.get(bus.getBusName());
                 if (busMarker == null) {
@@ -221,6 +258,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
 
+
         // Check if permission to access fine location is granted
         if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Permission is granted, get current location
@@ -236,10 +274,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             // Permission is not granted, request it
             ActivityCompat.requestPermissions(requireActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
+        googleMap.setOnMarkerClickListener(marker -> {
+            Toast.makeText(getActivity(), "clikc", Toast.LENGTH_SHORT).show();
+            // Notify the activity when a marker is clicked
+            if (markerClickListener != null) {
+                markerClickListener.onMarkerClick();
+            }
+            return false; // Return false to allow the default behavior (opening the marker info window)
+        });
 
         // Enable My Location layer on the map
         googleMap.setMyLocationEnabled(true);
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

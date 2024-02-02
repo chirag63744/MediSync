@@ -8,4 +8,9 @@
     <string name="my_account">My Account</string>
     <dimen name="fragment2_min_height">100dp</dimen>
     <dimen name="fragment2_max_height">500dp</dimen>
+    <string-array name="spinner_options">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
 </resources>
