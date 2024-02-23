@@ -1,13 +1,16 @@
 # MediSync - Android Application
 ## Introduction
-Introducing MediSync, an innovative application designed to reinvent the way we access and utilise ambulance services. With our innovative platform, users will have the power to seamlessly monitor, track, and book ambulance services with the click of a button. Say goodbye to the inefficiencies of traditional methods and embrace the future of emergency medical assistance with MediSync. During critical situations, users can conveniently access our application to swiftly address emergencies. By logging in, our advanced system promptly detects their location and efficiently assigns the closest available ambulance. Through seamless online payment integration, users can effortlessly book the ambulance and conveniently track its live location using our intuitive user interface.
-## Tech Used
-- Android Studio
+### A Brief of the Prototype:
+  Introducing MediSync, an innovative application designed to reinvent the way we access and utilise ambulance services. With our innovative platform, users will have the power to seamlessly monitor, track, and book ambulance services with the click of a button. Say goodbye to the inefficiencies of traditional methods and embrace the future of emergency medical assistance with MediSync. During critical situations, users can conveniently access our application to swiftly address emergencies. By logging in, our advanced system promptly detects their location and efficiently assigns the closest available ambulance. Through seamless online payment integration, users can effortlessly book the ambulance and conveniently track its live location using our intuitive user interface.
+  
+### Tech Stack: 
+ - Android Studio
 - Java
 - Firebase
 - Google Cloud
 - Google Map
 - XML
+
 ## Screenshots
 
 <img width="284" alt="image" src="https://github.com/chirag63744/MediSync/assets/99059872/963b3874-86fa-4cb9-9f2a-192b2bcc9891">
@@ -25,8 +28,8 @@ Introducing MediSync, an innovative application designed to reinvent the way we 
 
 <img width="284" alt="image" src="https://github.com/chirag63744/MediSync/assets/99059872/fc391bef-4cc2-41bd-ba24-09e911351099">
 
-
-
+### Step-by-Step Code Execution Instructions:
+apk file has been uploaded, install it in any android device
 
 
 
