@@ -11,6 +11,10 @@
 - Google Map
 - XML
 
+  ## Architecture
+  <img width="3444" alt="Ambulance_architecture" src="https://github.com/chirag63744/MediSync/assets/99059872/ccf30467-498b-4c54-b51e-076c05194ad2">
+
+
 ## Screenshots
 
 <img width="284" alt="image" src="https://github.com/chirag63744/MediSync/assets/99059872/963b3874-86fa-4cb9-9f2a-192b2bcc9891">
