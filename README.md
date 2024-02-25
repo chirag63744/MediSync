@@ -5,7 +5,7 @@
   
 ### Tech Stack: 
  - Android Studio
-- Java
+- Java 
 - Firebase
 - Google Cloud
 - Google Map
