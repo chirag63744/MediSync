@@ -74,7 +74,8 @@ public class HomeFragment_2 extends Fragment {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectPDF();
+                Intent i = new Intent(getContext(),Medical_data.class);
+                startActivity(i);
             }
         });
 

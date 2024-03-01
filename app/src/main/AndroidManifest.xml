@@ -49,6 +49,7 @@
 
         <activity
             android:name=".Tracking_Details"
+            android:parentActivityName=".Home"
             android:exported="false" />
         <activity
             android:name=".HomeFragment_2"

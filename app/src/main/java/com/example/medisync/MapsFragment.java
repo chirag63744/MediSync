@@ -56,8 +56,9 @@ import java.util.Map;
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     public interface MarkerClickListener {
-        void onMarkerClick();
+        void onMarkerClick(Marker marker);
     }
+
 
     private MarkerClickListener markerClickListener;
 
@@ -159,9 +160,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
             // Check if the bus is within the radius
             if (distanceToBus <= RADIUS_IN_METERS) {
-                GlobalLists globalLists = GlobalLists.getInstance();
-                globalLists.getLatitudeList().add(bus.getLocation().latitude);
-                System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"+globalLists.getLatitudeList().get(0));
+
 
                 // Check if the marker for this bus already exists
                 Marker busMarker = busMarkers.get(bus.getBusName());
@@ -196,16 +195,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         drawable.draw(canvas);
 
         // Create a text paint
-        Paint textPaint = new Paint();
-        textPaint.setTextSize(36);
-        textPaint.setColor(Color.BLACK);
+
 
         // Calculate the text position on the icon
-        int x = (canvas.getWidth() - (int) textPaint.measureText(busName)) / 2;
-        int y = canvas.getHeight() / 2;
 
-        // Draw the bus name on the icon
-        canvas.drawText(busName, x, y, textPaint);
 
         // Create a BitmapDescriptor from the updated bitmap
         return BitmapDescriptorFactory.fromBitmap(bitmap);
@@ -275,13 +268,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
         googleMap.setOnMarkerClickListener(marker -> {
-            Toast.makeText(getActivity(), "clikc", Toast.LENGTH_SHORT).show();
-            // Notify the activity when a marker is clicked
+            // Notify the activity when a marker is clicked and pass the marker details
             if (markerClickListener != null) {
-                markerClickListener.onMarkerClick();
+                markerClickListener.onMarkerClick(marker);
             }
             return false; // Return false to allow the default behavior (opening the marker info window)
         });
+
 
         // Enable My Location layer on the map
         googleMap.setMyLocationEnabled(true);

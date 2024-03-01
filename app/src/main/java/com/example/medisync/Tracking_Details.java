@@ -44,6 +44,7 @@ public class Tracking_Details extends AppCompatActivity {
     private FirebaseFirestore firestore;
     TextView textView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class Tracking_Details extends AppCompatActivity {
 
         b1 = findViewById(R.id.bookAmb);
         textView=findViewById(R.id.reviewtxt);
+
         b2=findViewById(R.id.review);
 
         firestore = FirebaseFirestore.getInstance();
@@ -138,7 +140,16 @@ public class Tracking_Details extends AppCompatActivity {
         // Set the initial state of the BottomSheet to collapsed
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Override the back button behavior
+        // You can start the Home activity or any other desired behavior
+        Intent intent = new Intent(this, Profile.class);
+       // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // This is important to finish the current activity
+    }
     private void fetchDataFromFirestore(String documentId) {
         firestore.collection("DriverTrust") // Replace with your actual collection name
                 .document(documentId)

@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".Medical_data"
-        android:background="#FFEEF2">
-
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Medical_data"
+    android:background="#FFEEF2">
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +52,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.064"
                     app:layout_constraintStart_toStartOf="parent">
-
                 </TextView>
 
                 <TextView
@@ -69,10 +65,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.066"
                     app:layout_constraintStart_toStartOf="parent">
-
                 </TextView>
 
                 <EditText
+                    android:id="@+id/editTextHeight"
                     android:layout_width="302dp"
                     android:layout_height="42dp"
                     android:layout_marginTop="128dp"
@@ -81,7 +77,6 @@
                     app:layout_constraintHorizontal_bias="0.066"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
                 </EditText>
 
                 <TextView
@@ -95,10 +90,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.055"
                     app:layout_constraintStart_toStartOf="parent">
-
                 </TextView>
 
                 <EditText
+                    android:id="@+id/editTextWeight"
                     android:layout_width="302dp"
                     android:layout_height="42dp"
                     android:layout_marginTop="284dp"
@@ -107,7 +102,6 @@
                     app:layout_constraintHorizontal_bias="0.066"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
                 </EditText>
 
                 <TextView
@@ -121,10 +115,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.076"
                     app:layout_constraintStart_toStartOf="parent">
-
                 </TextView>
 
                 <EditText
+                    android:id="@+id/editTextBloodGroup"
                     android:layout_width="302dp"
                     android:layout_height="42dp"
                     android:layout_marginTop="428dp"
@@ -133,7 +127,6 @@
                     app:layout_constraintHorizontal_bias="0.066"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
                 </EditText>
 
                 <TextView
@@ -147,7 +140,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.055"
                     app:layout_constraintStart_toStartOf="parent">
-
                 </TextView>
 
                 <Spinner
@@ -155,15 +147,12 @@
                     android:layout_width="302dp"
                     android:layout_height="42dp"
                     android:layout_marginTop="544dp"
+                    android:entries="@array/spinner_options"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.063"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
                 </Spinner>
-
-
-                <!-- Additional content within the ScrollView -->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -185,7 +174,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-

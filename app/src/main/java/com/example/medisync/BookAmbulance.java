@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +15,26 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.database.FirebaseDatabase;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 public class BookAmbulance extends AppCompatActivity implements MapsFragment.MarkerClickListener {
     Button bookAmb;
-    CardView cardView1,cardView2;
+    RecyclerView recyclerView;
+   // CardView cardView1,cardView2;
     private BottomSheetBehavior<View> bottomSheetBehavior;
-    CheckBox c1,c2;
+    private adapter_rec Adapter;
+
+    //CheckBox c1,c2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,25 +42,33 @@ public class BookAmbulance extends AppCompatActivity implements MapsFragment.Mar
         setContentView(R.layout.activity_bookambulance);
         final View mapFrame = findViewById(R.id.mapframe);
         final View bottomSheet = findViewById(R.id.sheet);
-        cardView1=findViewById(R.id.card1);
-        c1=findViewById(R.id.myCheckBox);;
-        c2=findViewById(R.id.myCheckBox1);
-        cardView2=findViewById(R.id.card2);
-        cardView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                c1.setChecked(true);
-                c2.setChecked(false);
 
-            }
-        });
-        cardView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                c2.setChecked(true);
-                c1.setChecked(false);
-            }
-        });
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        FirestoreRecyclerOptions<AmbFire> options = new FirestoreRecyclerOptions.Builder<AmbFire>()
+                .setQuery(FirebaseFirestore.getInstance().collection("Ambulance"),AmbFire.class)
+                .build();
+        Adapter = new adapter_rec(options);
+        recyclerView.setAdapter(Adapter);
+       // cardView1=findViewById(R.id.card1);
+       // c1=findViewById(R.id.myCheckBox);;
+       // cardView2=findViewById(R.id.card2);
+//        cardView1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                c1.setChecked(true);
+//                c2.setChecked(false);
+//
+//            }
+//        });
+//        cardView2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                c2.setChecked(true);
+//                c1.setChecked(false);
+//            }
+//        });
 
         // Get the BottomSheetBehavior from the FrameLayout
         //final BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -61,14 +82,29 @@ public class BookAmbulance extends AppCompatActivity implements MapsFragment.Mar
         bookAmb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (c1.isChecked() || c2.isChecked()) {
-                    // Only redirect if either checkbox is checked
+                boolean isAnyChecked = false;
+                GlobalData globalData = GlobalData.getInstance();
+
+                for (int i = 0; i < Adapter.getItemCount(); i++) {
+                    AmbFire item = Adapter.getItem(i);
+                    if (item != null && item.isChecked()) {
+                        isAnyChecked = true;
+                        globalData.setSelectedHospital(item.getHospital_Name());
+
+
+                        break;
+                    }
+                }
+
+                if (isAnyChecked) {
+                    // Redirect to the Tracking_Details activity or perform desired action
                     Intent i = new Intent(BookAmbulance.this, Tracking_Details.class);
                     startActivity(i);
                 } else {
                     // Display a toast or handle the case where no checkbox is checked
                     Toast.makeText(BookAmbulance.this, "Please select a checkbox", Toast.LENGTH_SHORT).show();
                 }
+                finish();
             }
         });
 
@@ -83,18 +119,6 @@ public class BookAmbulance extends AppCompatActivity implements MapsFragment.Mar
 
 //        GlobalLists globalLists = GlobalLists.getInstance();
 //        double latitude = globalLists.getLatitudeList().get(0);
-        GlobalLists globalLists = GlobalLists.getInstance();
-        List<Double> latitudeList = globalLists.getLatitudeList();
-
-        if (!latitudeList.isEmpty()) {
-            double latitude = latitudeList.get(0);
-            Toast.makeText(this, ""+latitude, Toast.LENGTH_SHORT).show();
-
-            // Now you can use the latitude value
-        } else {
-            Toast.makeText(this, "khali", Toast.LENGTH_SHORT).show();
-            // Handle the case when the latitude list is empty
-        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -119,10 +143,35 @@ public class BookAmbulance extends AppCompatActivity implements MapsFragment.Mar
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
     }
-    public void onMarkerClick() {
-        // Handle marker click, change the state of the bottom sheet to the expanded state
+
+    public void onMarkerClick(Marker marker) {
+        // Handle marker click and fetch marker details
+        LatLng markerPosition = marker.getPosition();
+        String markerTitle = marker.getTitle();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        // Now you can use the marker details as needed
+        // For example, pass them to another method or show in the bottom sheet
+        showMarkerDetails(markerPosition, markerTitle);
     }
+
+    private void showMarkerDetails(LatLng position, String title) {
+        // Implement how you want to display or use marker details in your bottom sheet
+        // For example, update UI elements with the details
+        Toast.makeText(this, title, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Adapter.stopListening();
+    }
+
 
 
     // You can define methods to handle fragment transactions based on user interactions
